@@ -21,7 +21,6 @@
 	<modules>
 		<module>UserAuthentication</module>
 		<module>kanbanProject</module>
-
 		<module>eureka</module>
 		<module>ApiGateway</module>
 	</modules>
