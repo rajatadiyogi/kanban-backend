@@ -21,6 +21,7 @@
 	<modules>
 		<module>UserAuthentication</module>
 		<module>kanbanProject</module>
+		<module>NotificationService</module>
 	</modules>
 	<dependencies>
 		<dependency>
@@ -48,7 +49,6 @@
 			<version>2.4.0-b180830.0359</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>

@@ -1,23 +1,24 @@
-package com.vc.kanbanProject.domain;
+package com.vc.kanbanProject.Publisher;
+
+
+//DTO means - DATA TRANSFER OBJECTS
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import lombok.ToString;
 
 import java.util.Date;
-import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Project {
+@ToString
+public class ProjectDTO {
 
-    @Id
     private int project_id;
     private String name;
     private String description;
     private Date duration;
-    private List<Task> taskList;
-
 }
