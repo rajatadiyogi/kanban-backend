@@ -4,6 +4,7 @@ import com.vc.kanbanProject.domain.Employee;
 import com.vc.kanbanProject.domain.Project;
 import com.vc.kanbanProject.exception.EmployeeAlreadyExists;
 import com.vc.kanbanProject.exception.EmployeeNotFound;
+import com.vc.kanbanProject.exception.ProjectAlreadyExists;
 import com.vc.kanbanProject.proxy.EmployeeProxy;
 import com.vc.kanbanProject.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
