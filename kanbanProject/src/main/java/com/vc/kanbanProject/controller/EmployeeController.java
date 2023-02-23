@@ -46,6 +46,7 @@ public class EmployeeController {
             Claims claims = (Claims) request.getAttribute("claims");
             String email = claims.getSubject();
             System.out.println(claims);
+            System.out.println(email);
 
             responseEntity = new ResponseEntity(kanbanService.saveProjectToList(project, email), HttpStatus.OK);
 
@@ -58,6 +59,7 @@ public class EmployeeController {
 
     @GetMapping("/employee/getProjects")
     public ResponseEntity<?> getProjectDetails(HttpServletRequest request) throws EmployeeNotFound {
+
         try{
             Claims claims = (Claims) request.getAttribute("claims");
             email = claims.getSubject();
@@ -73,5 +75,12 @@ public class EmployeeController {
         }
         return responseEntity;
     }
+
+    @GetMapping("employee/getAll")
+    public ResponseEntity getAllDetails(){
+        List<Employee> users = kanbanService.getAllEmployees();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 
 }

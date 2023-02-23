@@ -15,4 +15,5 @@ public interface KanbanService {
     Employee saveProjectToList(Project project, String email) throws EmployeeNotFound;
 
     Employee findByEmail(String email) throws EmployeeNotFound;
+    Project findById(int project_id);
 }

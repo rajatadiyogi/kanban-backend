@@ -6,6 +6,7 @@ import com.vc.kanbanProject.exception.EmployeeAlreadyExists;
 import com.vc.kanbanProject.exception.EmployeeNotFound;
 import com.vc.kanbanProject.proxy.EmployeeProxy;
 import com.vc.kanbanProject.repository.EmployeeRepository;
+import com.vc.kanbanProject.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,12 @@ public class KanbanServiceImpl implements KanbanService{
 
 
     private EmployeeProxy employeeProxy;
+    private ProjectRepository projectRepository;
 
     @Autowired
-    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy) {
+    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy, ProjectRepository projectRepository) {
         this.employeeRepository = employeeRepository;
-
+        this.projectRepository = projectRepository;
         this.employeeProxy = employeeProxy;
     }
 
@@ -48,6 +50,7 @@ public class KanbanServiceImpl implements KanbanService{
 
     @Override
     public Employee saveProjectToList(Project project, String email) throws EmployeeNotFound {
+        System.out.println("serve : "+email);
         if(employeeRepository.findById(email).isEmpty()){
             throw new EmployeeNotFound();
         }
@@ -68,5 +71,10 @@ public class KanbanServiceImpl implements KanbanService{
             throw new EmployeeNotFound();
         }
         return employeeRepository.findByEmail(email);
+    }
+
+    @Override
+    public Project findById(int project_id) {
+        return projectRepository.findById(project_id);
     }
 }
