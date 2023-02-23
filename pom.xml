@@ -16,11 +16,14 @@
 	<description>Capstone Project for Kanban Application</description>
 	<properties>
 		<java.version>11</java.version>
-
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
 	</properties>
 	<modules>
 		<module>UserAuthentication</module>
 		<module>kanbanProject</module>
+
+		<module>eureka</module>
+		<module>ApiGateway</module>
 	</modules>
 	<dependencies>
 		<dependency>
@@ -47,8 +50,23 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.4.0-b180830.0359</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+		</dependency>
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
