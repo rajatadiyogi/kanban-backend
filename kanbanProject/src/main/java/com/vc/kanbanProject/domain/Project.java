@@ -20,4 +20,11 @@ public class Project {
     private Date duration;
     private List<Task> taskList;
 
+    public Project(int project_id, String name, String description, Date duration){
+        this.project_id = project_id;
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
+    }
+
 }
