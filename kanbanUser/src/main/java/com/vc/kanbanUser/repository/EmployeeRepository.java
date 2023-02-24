@@ -1,6 +1,6 @@
-package com.vc.kanbanProject.repository;
+package com.vc.kanbanUser.repository;
 
-import com.vc.kanbanProject.domain.Employee;
+import com.vc.kanbanUser.domain.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
