@@ -50,8 +50,15 @@ public class KanbanServiceImpl implements KanbanService{
     }
 
     @Override
-    public Project deleteTaskFromProject(String email, int project_id) {
-        return null;
+    public Project deleteTaskFromProject(int project_id,String email, String task) {
+        Project project = projectRepository.findById(project_id);
+        if(project.getEmail().equals(email)){
+            List<Task> list = project.getTaskList();
+            list.removeIf(x->x.getName().equals(task));
+            project.setTaskList(list);
+        }
+
+        return projectRepository.save(project);
     }
 
     @Override
@@ -69,8 +76,19 @@ public class KanbanServiceImpl implements KanbanService{
     }
 
     @Override
-    public Project updateTask(String email, int project_id, Task task) throws ProjectNotFound {
-        return null;
+    public Project updateTaskStatus(int project_id, Task task) throws ProjectNotFound {
+        Project project = projectRepository.findById(project_id);
+        if(project == null){
+            throw  new ProjectNotFound();
+        }
+        List<Task> list = project.getTaskList();
+        for(Task task1 : list){
+            if(task1.getName().equals(task.getName()) ){
+                task1.setStatus(task.getStatus());
+            }
+        }
+        project.setTaskList(list);
+        return projectRepository.save(project);
     }
 
     @Override
