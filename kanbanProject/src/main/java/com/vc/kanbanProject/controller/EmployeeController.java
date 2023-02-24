@@ -96,6 +96,33 @@ public class EmployeeController {
         return  new ResponseEntity<>(kanbanService.findById(project_id),HttpStatus.OK);
     }
 
+    @DeleteMapping("project/delete/{project_id}")
+    public ResponseEntity<?> deleteTask(@PathVariable int project_id, @RequestBody Task task,HttpServletRequest request){
+
+        Claims claims = (Claims) request.getAttribute("claims");
+        String email = claims.getSubject();
+        System.out.println("user email from claims :: " + claims.getSubject());
+        System.out.println("email " + email);
+
+
+            return new ResponseEntity<>(kanbanService.deleteTaskFromProject(project_id,email,task.getName()),HttpStatus.OK);
+
+
+    }
+
+    @PutMapping("project/updateTask/{project_id}")
+    public ResponseEntity<?> updateTaskStatus(@PathVariable int project_id, @RequestBody Task task) throws ProjectNotFound{
+        ResponseEntity responseEntity1;
+
+        try {
+            responseEntity1 =  new ResponseEntity<>(kanbanService.updateTaskStatus(project_id,task),HttpStatus.OK);
+        }catch (ProjectNotFound e){
+            throw  new ProjectNotFound();
+        }
+        return responseEntity1;
+
+    }
+
 
 
 
