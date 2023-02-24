@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Document
 public class Project {
 
     @Id
@@ -19,12 +21,9 @@ public class Project {
     private String description;
     private Date duration;
     private List<Task> taskList;
+    private List<String> assigned_emp;
+    private String email; // to store email of person creating project
 
-    public Project(int project_id, String name, String description, Date duration){
-        this.project_id = project_id;
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
-    }
+
 
 }

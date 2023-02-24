@@ -1,4 +1,4 @@
-package com.vc.kanbanProject.filter;
+package com.vc.kanbanUser.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

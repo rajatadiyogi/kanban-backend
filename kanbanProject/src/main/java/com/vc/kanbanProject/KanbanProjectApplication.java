@@ -21,7 +21,7 @@ public class KanbanProjectApplication {
 	public FilterRegistrationBean jwtFilterBean(){
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new JwtFilter());
-		filterRegistrationBean.addUrlPatterns("/kanban/employee/*");
+		filterRegistrationBean.addUrlPatterns("/kan/project/*");
 		return filterRegistrationBean;
 	}
 	/*@Bean

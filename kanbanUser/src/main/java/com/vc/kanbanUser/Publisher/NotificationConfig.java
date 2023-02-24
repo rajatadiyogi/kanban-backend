@@ -1,4 +1,4 @@
-package com.vc.kanbanProject.Publisher;
+package com.vc.kanbanUser.Publisher;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
