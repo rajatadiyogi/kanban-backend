@@ -22,4 +22,10 @@ public class Employee {
     private String role;
     List<Integer> project_id_list;
 
+    public Employee(String email, String password, int emp_id, String role) {
+        this.email = email;
+        this.password = password;
+        this.emp_id = emp_id;
+        this.role = role;
+    }
 }
