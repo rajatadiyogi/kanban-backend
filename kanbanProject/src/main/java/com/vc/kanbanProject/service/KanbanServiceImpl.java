@@ -21,7 +21,7 @@ public class KanbanServiceImpl implements KanbanService{
     private ProjectProxy employeeProxy;
     private ProjectRepository projectRepository;
 
-    @Autowired
+    @Autowired //constructor Autowired
     public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
         this.employeeProxy = employeeProxy;
@@ -50,7 +50,7 @@ public class KanbanServiceImpl implements KanbanService{
     }
 
     @Override
-    public Project deleteTaskFromProject(int project_id,String email, String task) {
+    public Project deleteTaskFromProject(int project_id, String email, String task) {
         Project project = projectRepository.findById(project_id);
         if(project.getEmail().equals(email)){
             List<Task> list = project.getTaskList();
