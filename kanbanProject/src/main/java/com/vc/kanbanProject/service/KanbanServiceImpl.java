@@ -1,14 +1,14 @@
 package com.vc.kanbanProject.service;
 
-import com.vc.kanbanProject.domain.Employee;
 import com.vc.kanbanProject.domain.Project;
-import com.vc.kanbanProject.exception.EmployeeAlreadyExists;
+import com.vc.kanbanProject.domain.Task;
+import com.vc.kanbanProject.domain.User;
 import com.vc.kanbanProject.exception.EmployeeNotFound;
 import com.vc.kanbanProject.exception.ProjectAlreadyExists;
-import com.vc.kanbanProject.proxy.EmployeeProxy;
-import com.vc.kanbanProject.repository.EmployeeRepository;
+import com.vc.kanbanProject.exception.ProjectNotFound;
+import com.vc.kanbanProject.proxy.ProjectProxy;
+import com.vc.kanbanProject.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -16,58 +16,89 @@ import java.util.List;
 
 @Service
 public class KanbanServiceImpl implements KanbanService{
-    private EmployeeRepository employeeRepository;
 
 
-    private EmployeeProxy employeeProxy;
+    private ProjectProxy employeeProxy;
+    private ProjectRepository projectRepository;
 
     @Autowired
-    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy) {
-        this.employeeRepository = employeeRepository;
-
+    public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
         this.employeeProxy = employeeProxy;
     }
 
-    @Override
-    public Employee saveEmployee(Employee employee) throws EmployeeAlreadyExists {
-        if(employeeRepository.findById(employee.getEmail()).isPresent()){
-            throw new EmployeeAlreadyExists();
-        }
-        Employee savedEmployee = employeeRepository.save(employee);
-        if(!(savedEmployee.getEmail().isEmpty())){
-            ResponseEntity r = employeeProxy.registerEmployee(employee);
-            System.out.println(r.getBody());
-        }
-
-        return savedEmployee;
-    }
-
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
-
-    @Override
-    public Employee saveProjectToList(Project project, String email) throws EmployeeNotFound {
-        if(employeeRepository.findById(email).isEmpty()){
-            throw new EmployeeNotFound();
-        }
-        Employee employee = employeeRepository.findByEmail(email);
-        if(employee.getProjectList()==null){
-            employee.setProjectList(Arrays.asList(project));
-        }else {
-            List<Project> projects = employee.getProjectList();
-            projects.add(project);
-            employee.setProjectList(projects);
-        }
-        return employeeRepository.save(employee);
-    }
-
-    @Override
+    /*@Override
     public Employee findByEmail(String email) throws EmployeeNotFound {
         if (employeeRepository.findById(email).isEmpty()) {
             throw new EmployeeNotFound();
         }
         return employeeRepository.findByEmail(email);
+    }*/
+
+    @Override
+    public Project findById(int project_id) {
+        return projectRepository.findById(project_id);
+    }
+
+    @Override
+    public Project createProject(Project project) throws ProjectAlreadyExists {
+        Project savedProject = projectRepository.save(project);
+        System.out.println(project.getProject_id());
+        System.out.println(project.getEmail());
+        employeeProxy.addProjectId(project.getProject_id(), project.getEmail());
+        return  savedProject;
+    }
+
+    @Override
+    public Project deleteTaskFromProject(String email, int project_id) {
+        return null;
+    }
+
+    @Override
+    public Project addTask(Task task, int project_id) throws ProjectNotFound {
+        Project project =  projectRepository.findById(project_id);
+
+        if(project.getTaskList() ==null){
+            project.setTaskList(Arrays.asList(task));
+        }else {
+            List<Task> tasks = project.getTaskList();
+            tasks.add(task);
+            project.setTaskList(tasks);
+        }
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public Project updateTask(String email, int project_id, Task task) throws ProjectNotFound {
+        return null;
+    }
+
+    @Override
+    public Project updateProject(String email, Project project) throws ProjectNotFound {
+        return null;
+    }
+
+    @Override
+    public Project assignMember(int project_id, User user) throws EmployeeNotFound, ProjectNotFound {
+       Project project =  projectRepository.findById(project_id);
+
+        System.out.println("kan project service");
+        System.out.println(user);
+        System.out.println(user.getEmail());
+        if(project.getAssigned_emp() ==null){
+            project.setAssigned_emp(Arrays.asList(user.getEmail()));
+        }else {
+            List<String> assigned_employees = project.getAssigned_emp();
+            assigned_employees.add(user.getEmail());
+            project.setAssigned_emp(assigned_employees);
+        }
+         employeeProxy.addProjectId(project_id, user.getEmail());
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public List<Project> findByEmail(String email) {
+
+        return projectRepository.findByEmail(email);
     }
 }

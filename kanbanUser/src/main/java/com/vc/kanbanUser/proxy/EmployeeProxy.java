@@ -1,6 +1,6 @@
-package com.vc.kanbanProject.proxy;
+package com.vc.kanbanUser.proxy;
 
-import com.vc.kanbanProject.domain.Employee;
+import com.vc.kanbanUser.domain.Employee;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

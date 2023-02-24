@@ -13,6 +13,7 @@ public class Task {
     @Id
     private int task_id;
     private String name;
+    private String description;
     private String status;
     private String priority;
 }

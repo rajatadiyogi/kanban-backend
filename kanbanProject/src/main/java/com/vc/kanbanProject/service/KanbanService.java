@@ -1,7 +1,8 @@
 package com.vc.kanbanProject.service;
 
-import com.vc.kanbanProject.domain.Employee;
 import com.vc.kanbanProject.domain.Project;
+import com.vc.kanbanProject.domain.Task;
+import com.vc.kanbanProject.domain.User;
 import com.vc.kanbanProject.exception.EmployeeAlreadyExists;
 import com.vc.kanbanProject.exception.EmployeeNotFound;
 import com.vc.kanbanProject.exception.ProjectAlreadyExists;
@@ -11,10 +12,19 @@ import java.util.List;
 
 public interface KanbanService {
 
-    Employee saveEmployee(Employee employee) throws EmployeeAlreadyExists;
+  Project createProject(Project project) throws ProjectAlreadyExists;
 
-    List<Employee> getAllEmployees();
-    Employee saveProjectToList(Project project, String email) throws EmployeeNotFound;
+  Project deleteTaskFromProject(String email, int project_id);
 
-    Employee findByEmail(String email) throws EmployeeNotFound;
+  Project addTask(Task task,int project_id) throws ProjectNotFound;
+
+  Project updateTask(String email, int project_id, Task task) throws ProjectNotFound;
+
+  Project updateProject(String email, Project project) throws ProjectNotFound;
+
+    Project findById(int project_id);
+
+    List<Project> findByEmail(String email);
+
+    Project assignMember(int project_id, User user) throws EmployeeNotFound,ProjectNotFound;
 }

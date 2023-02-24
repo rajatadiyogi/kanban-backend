@@ -1,4 +1,4 @@
-package com.vc.kanbanProject.Publisher;
+package com.vc.kanbanUser.Publisher;
 
 
 //DTO means - DATA TRANSFER OBJECTS

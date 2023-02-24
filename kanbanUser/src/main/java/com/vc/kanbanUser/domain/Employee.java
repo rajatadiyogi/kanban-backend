@@ -1,4 +1,4 @@
-package com.vc.kanbanProject.domain;
+package com.vc.kanbanUser.domain;
 
 
 import lombok.AllArgsConstructor;
@@ -20,5 +20,6 @@ public class Employee {
     private String password;
     private int emp_id;
     private String role;
-    List<Project> projectList;
+    List<Integer> project_id_list;
+
 }
