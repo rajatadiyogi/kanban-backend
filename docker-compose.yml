@@ -33,10 +33,11 @@ services:
     ports:
       - "27017:27017"
 
-  eureka-server:
-    container_name: eureka-server
-    image: eureka:v1.5.5
-    build: eureka/
+  eureka-service:
+    container_name: eureka-service
+    build:
+      context: /eureka
+      dockerfile: Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -51,7 +52,7 @@ services:
     networks:
       - kanbanprox
     depends_on:
-      - eureka-server
+      - eureka-service
 
   kanban-project:
     container_name: kanban-project
@@ -63,7 +64,7 @@ services:
     depends_on:
       - mongo-data
       - api-gateway
-      - eureka-server
+      - eureka-service
 #      - rabbitmq
 
   kanban-user:
@@ -76,7 +77,7 @@ services:
     depends_on:
       - mongo-data
       - api-gateway
-      - eureka-server
+      - eureka-service
 
   notification-service:
     container_name: notification-service
@@ -91,7 +92,7 @@ services:
 #      - mongo-data
 #      - rabbitmq
       - api-gateway
-      - eureka-server
+      - eureka-service
 
   user-auth:
     container_name: user-auth
@@ -103,7 +104,7 @@ services:
     depends_on:
       - mysql-data
       - api-gateway
-      - eureka-server
+      - eureka-service
 
 networks:
   kanbanprox:
