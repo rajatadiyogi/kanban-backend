@@ -14,11 +14,11 @@ public interface KanbanService {
 
   Project createProject(Project project) throws ProjectAlreadyExists;
 
-  Project deleteTaskFromProject(String email, int project_id);
+  Project deleteTaskFromProject(int project_id,String email,String task);
 
   Project addTask(Task task,int project_id) throws ProjectNotFound;
 
-  Project updateTask(String email, int project_id, Task task) throws ProjectNotFound;
+  Project updateTaskStatus(int project_id, Task task) throws ProjectNotFound;
 
   Project updateProject(String email, Project project) throws ProjectNotFound;
 
