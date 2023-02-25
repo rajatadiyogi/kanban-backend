@@ -34,4 +34,22 @@ public class EmailServiceImpl implements EmailService{
             return "mail not sent";
         }
     }
+
+    @Override
+    public String sendProjectAssignedEmail(EmailInfo emailInfo) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(sender);
+            message.setFrom(emailInfo.getEmail_adm());
+            message.setTo(emailInfo.getEmail());
+            message.setSentDate(new Date());
+            message.setSubject(emailInfo.getSubject());
+            message.setText(emailInfo.getMsgBody());
+
+            javaMailSender.send(message);
+            return "success";
+        }catch (Exception e){
+            return "mail not sent";
+        }
+    }
 }

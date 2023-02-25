@@ -7,6 +7,8 @@ import com.vc.kanbanProject.exception.EmployeeNotFound;
 import com.vc.kanbanProject.exception.ProjectAlreadyExists;
 import com.vc.kanbanProject.exception.ProjectNotFound;
 import com.vc.kanbanProject.proxy.ProjectProxy;
+import com.vc.kanbanProject.rebbitMQ.EmailDTO;
+import com.vc.kanbanProject.rebbitMQ.EmailProducer;
 import com.vc.kanbanProject.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,13 @@ public class KanbanServiceImpl implements KanbanService{
 
     private ProjectProxy employeeProxy;
     private ProjectRepository projectRepository;
+    private EmailProducer emailProducer;
 
     @Autowired //constructor Autowired
-    public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository) {
+    public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository, EmailProducer emailProducer) {
         this.projectRepository = projectRepository;
         this.employeeProxy = employeeProxy;
+        this.emailProducer = emailProducer;
     }
 
     /*@Override
@@ -99,7 +103,6 @@ public class KanbanServiceImpl implements KanbanService{
     @Override
     public Project assignMember(int project_id, User user) throws EmployeeNotFound, ProjectNotFound {
        Project project =  projectRepository.findById(project_id);
-
         System.out.println("kan project service");
         System.out.println(user);
         System.out.println(user.getEmail());
@@ -110,13 +113,30 @@ public class KanbanServiceImpl implements KanbanService{
             assigned_employees.add(user.getEmail());
             project.setAssigned_emp(assigned_employees);
         }
+        projectAssignEmailBuilder(project,user);
          employeeProxy.addProjectId(project_id, user.getEmail());
         return projectRepository.save(project);
     }
+
+
 
     @Override
     public List<Project> findByEmail(String email) {
 
         return projectRepository.findByEmail(email);
+    }
+    private void projectAssignEmailBuilder(Project project, User user) {
+        String[] username = user.getEmail().split("@");
+        String[] projectLeader =project.getEmail().split("@");
+        String subject = "New Project Assigned by"+projectLeader[0];
+        String bodyOfMail = "Dear "+username[0]+"\n You have be assigned with a new Project by"
+                +"\n Title : **"+project.getName()+"**"
+                +"\n Description : "+project.getDescription();
+        EmailDTO dto = new EmailDTO();
+        dto.setEmail(user.getEmail());
+        dto.setEmail_adm(project.getEmail());
+        dto.setSubject(subject);
+        dto.setMsgBody(bodyOfMail);
+        emailProducer.ProjectAssignedEmail(dto);
     }
 }

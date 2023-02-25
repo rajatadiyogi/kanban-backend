@@ -11,14 +11,14 @@ public class Subscriber {
     @Autowired
     private EmailService emailService;
 
-    @RabbitListener(queues = "email-notification")
+    @RabbitListener(queues = "email-welcome")
     public void getDataFromQueue(EmailInfo emailInfo){
         String result = emailService.sendWelcomeEmail(emailInfo);
         System.out.println(result);
     }
 
-    @RabbitListener(queues = "email-notification")
-    public void updateStatusToAdmin(EmailInfo emailInfo){
+    @RabbitListener(queues = "assigning_project")
+    public void ProjectAssigned(EmailInfo emailInfo){
         String result = emailService.sendWelcomeEmail(emailInfo);
         System.out.println(result);
     }
