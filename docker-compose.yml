@@ -106,6 +106,19 @@ services:
       - api-gateway
       - eureka-service
 
+  email-sender:
+    container_name: email-sender
+    build:
+      context: EmailNotification/
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    networks:
+      - kanbanprox
+    depends_on:
+      - rabbitmq
+      - api-gateway
+
 networks:
   kanbanprox:
     driver: bridge
