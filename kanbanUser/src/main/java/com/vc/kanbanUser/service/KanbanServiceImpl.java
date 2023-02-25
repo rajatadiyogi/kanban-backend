@@ -33,8 +33,6 @@ public class KanbanServiceImpl implements KanbanService{
 
     @Override
     public Employee saveEmployee(Employee employee) throws EmployeeAlreadyExists {
-        System.out.println("in the kanbanUser save employee");
-        System.out.println("==============================================================================");
         if(employeeRepository.findById(employee.getEmail()).isPresent()){
             throw new EmployeeAlreadyExists();
         }
