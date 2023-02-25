@@ -6,6 +6,8 @@ import com.vc.kanbanUser.exception.EmployeeAlreadyExists;
 import com.vc.kanbanUser.exception.EmployeeNotFound;
 import com.vc.kanbanUser.exception.ProjectAlreadyExists;
 import com.vc.kanbanUser.proxy.EmployeeProxy;
+import com.vc.kanbanUser.rabbitmq.EmailDTO;
+import com.vc.kanbanUser.rabbitmq.EmailProducer;
 import com.vc.kanbanUser.repository.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +20,31 @@ import java.util.List;
 @Service
 public class KanbanServiceImpl implements KanbanService{
     private EmployeeRepository employeeRepository;
-
-
     private EmployeeProxy employeeProxy;
+    private EmailProducer emailProducer;
 
 
     @Autowired
-    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy) {
+    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy,EmailProducer emailProducer) {
         this.employeeRepository = employeeRepository;
         this.employeeProxy = employeeProxy;
+        this.emailProducer = emailProducer;
     }
 
     @Override
     public Employee saveEmployee(Employee employee) throws EmployeeAlreadyExists {
+        System.out.println("in the kanbanUser save employee");
+        System.out.println("==============================================================================");
         if(employeeRepository.findById(employee.getEmail()).isPresent()){
             throw new EmployeeAlreadyExists();
         }
         Employee savedEmployee = employeeRepository.save(employee);
+        System.out.println(savedEmployee);
         if(!(savedEmployee.getEmail().isEmpty())){
             ResponseEntity r = employeeProxy.registerEmployee(employee);
+            EmailDTO dto = new EmailDTO(employee.getEmail(),"Thank you for reg withUs","Welcome to focus");
+            emailProducer.welcomeEmail(dto);
+            System.out.println(dto);
             System.out.println(r.getBody());
         }
 
