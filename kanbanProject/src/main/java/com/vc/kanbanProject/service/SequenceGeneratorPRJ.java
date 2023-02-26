@@ -1,6 +1,8 @@
 package com.vc.kanbanProject.service;
 
-import com.vc.kanbanUser.domain.DbSequence;
+
+import com.vc.kanbanProject.domain.DbSequence;
+//import com.vc.kanbanUser.domain.DbSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
