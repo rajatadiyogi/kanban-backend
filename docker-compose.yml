@@ -61,11 +61,13 @@ services:
       - "8082:8082"
     networks:
       - kanbanprox
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
     depends_on:
       - mongo-data
       - api-gateway
       - eureka-service
-#      - rabbitmq
+      - rabbitmq
 
   kanban-user:
     container_name: kanban-user
@@ -74,6 +76,8 @@ services:
       - "8083:8083"
     networks:
       - kanbanprox
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
     depends_on:
       - mongo-data
       - api-gateway
@@ -90,7 +94,7 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq-container
     depends_on:
 #      - mongo-data
-#      - rabbitmq
+      - rabbitmq
       - api-gateway
       - eureka-service
 
@@ -115,6 +119,8 @@ services:
       - "8085:8085"
     networks:
       - kanbanprox
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
     depends_on:
       - rabbitmq
       - api-gateway
