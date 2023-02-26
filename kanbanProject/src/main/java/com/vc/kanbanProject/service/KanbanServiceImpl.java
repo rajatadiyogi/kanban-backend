@@ -11,6 +11,7 @@ import com.vc.kanbanProject.rebbitMQ.EmailDTO;
 import com.vc.kanbanProject.rebbitMQ.EmailProducer;
 import com.vc.kanbanProject.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,12 +24,18 @@ public class KanbanServiceImpl implements KanbanService{
     private ProjectProxy employeeProxy;
     private ProjectRepository projectRepository;
     private EmailProducer emailProducer;
+    private SequenceGeneratorPRJ generator;
+
+    @Value("${mg.sequenceName}")
+    private String seq_name;
 
     @Autowired //constructor Autowired
-    public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository, EmailProducer emailProducer) {
+    public KanbanServiceImpl( ProjectProxy employeeProxy, ProjectRepository projectRepository, EmailProducer emailProducer,
+                              SequenceGeneratorPRJ generator) {
         this.projectRepository = projectRepository;
         this.employeeProxy = employeeProxy;
         this.emailProducer = emailProducer;
+        this.generator = generator;
     }
 
     /*@Override
@@ -46,8 +53,9 @@ public class KanbanServiceImpl implements KanbanService{
 
     @Override
     public Project createProject(Project project) throws ProjectAlreadyExists {
+        int num = 1000+generator.getSequenceNumber(seq_name);
+        project.setProject_id(num);
         Project savedProject = projectRepository.save(project);
-        System.out.println(project.getProject_id());
         System.out.println(project.getEmail());
         employeeProxy.addProjectId(project.getProject_id(), project.getEmail());
         return  savedProject;
@@ -129,7 +137,7 @@ public class KanbanServiceImpl implements KanbanService{
         String[] username = user.getEmail().split("@");
         String[] projectLeader =project.getEmail().split("@");
         String subject = "New Project Assigned by"+projectLeader[0];
-        String bodyOfMail = "Dear "+username[0]+"\n You have be assigned with a new Project by"
+        String bodyOfMail = "Dear "+username[0]+"\n You have be assigned with a new Project"
                 +"\n Title : **"+project.getName()+"**"
                 +"\n Description : "+project.getDescription();
         EmailDTO dto = new EmailDTO();

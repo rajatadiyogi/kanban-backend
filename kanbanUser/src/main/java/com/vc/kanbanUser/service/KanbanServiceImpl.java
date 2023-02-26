@@ -11,6 +11,7 @@ import com.vc.kanbanUser.rabbitmq.EmailProducer;
 import com.vc.kanbanUser.repository.EmployeeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,17 @@ public class KanbanServiceImpl implements KanbanService{
     private EmployeeRepository employeeRepository;
     private EmployeeProxy employeeProxy;
     private EmailProducer emailProducer;
+    private SequenceGenerator generator;
 
-
+    @Value("${mg.sequenceName}")
+    private String seq_name;
     @Autowired
-    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy,EmailProducer emailProducer) {
+    public KanbanServiceImpl(EmployeeRepository employeeRepository, EmployeeProxy employeeProxy,EmailProducer emailProducer,
+                             SequenceGenerator generator) {
         this.employeeRepository = employeeRepository;
         this.employeeProxy = employeeProxy;
         this.emailProducer = emailProducer;
+        this.generator = generator;
     }
 
     @Override
@@ -36,15 +41,13 @@ public class KanbanServiceImpl implements KanbanService{
         if(employeeRepository.findById(employee.getEmail()).isPresent()){
             throw new EmployeeAlreadyExists();
         }
+        int num = 1000+generator.getSequenceNumber(seq_name);
+        employee.setEmp_id("EMP"+num);
+        System.out.println(employee);
+        ResponseEntity<?> r = employeeProxy.registerEmployee(employee);
         Employee savedEmployee = employeeRepository.save(employee);
-        System.out.println(savedEmployee);
-        if(!(savedEmployee.getEmail().isEmpty())){
-            ResponseEntity r = employeeProxy.registerEmployee(employee);
-            EmailDTO dto = new EmailDTO(employee.getEmail(),"Thank you for reg withUs","Welcome to focus");
-            emailProducer.welcomeEmail(dto);
-            System.out.println(dto);
-            System.out.println(r.getBody());
-        }
+        EmailDTO dto = new EmailDTO(employee.getEmail(),"Thank you for reg withUs","Welcome to focus");
+        emailProducer.welcomeEmail(dto);
 
         return savedEmployee;
     }
