@@ -14,6 +14,7 @@ public class JwtSecurityTokenGeneratorImpl implements SecurityTokenGenerator{
 
     @Override
     public Map<String, String> createToken(Employee employee) {
+        System.out.println(employee);
         String token = null;
         Map<String, Object> claims = new HashMap<>();
         claims.put("email",employee.getEmail());

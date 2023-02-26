@@ -6,18 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import org.springframework.data.annotation.Transient;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 public class Employee {
-
-
-    private int emp_id;
+    private String emp_id;
     @Id
     private String email;
+    @Transient
     private String password;
     private  String role;
+    private byte[] salt;
+    private String hash;
 
 }
