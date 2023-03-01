@@ -14,5 +14,4 @@ public class DbSequence {
     @Id
     private String id;
     private int emp;
-    private int prj;
 }

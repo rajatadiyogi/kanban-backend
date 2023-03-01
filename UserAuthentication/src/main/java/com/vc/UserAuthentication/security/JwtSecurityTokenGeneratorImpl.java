@@ -18,12 +18,12 @@ public class JwtSecurityTokenGeneratorImpl implements SecurityTokenGenerator{
         String token = null;
         Map<String, Object> claims = new HashMap<>();
         claims.put("email",employee.getEmail());
-        claims.put("role",employee.getRole());
+        claims.put("username",employee.getUsername());
         token = generateToken(claims,employee.getEmail());
         Map<String, String> result = new HashMap<>();
         result.put("token",token);
         result.put("message","Successfully Logged In");
-        result.put("role", employee.getRole());
+        result.put("username", employee.getUsername());
         result.put("email",employee.getEmail());
 
         return result;

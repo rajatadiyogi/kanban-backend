@@ -31,6 +31,7 @@ public class EmployeeController {
     @PostMapping("/register")
     public ResponseEntity<?> saveEmployee(@RequestBody Employee employee) throws EmployeeAlreadyExists {
         try {
+            employee.setTitle("FREE");
             return new ResponseEntity(kanbanService.saveEmployee(employee), HttpStatus.CREATED);
         }
         catch (EmployeeAlreadyExists e){

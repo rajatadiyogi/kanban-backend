@@ -25,7 +25,7 @@ public class EmployeeController {
     private KanbanService kanbanService;
 
     private ResponseEntity<?> responseEntity;
-    String email;
+//    String email;
 
     @Autowired
     public EmployeeController(KanbanService kanbanService) {
@@ -34,15 +34,13 @@ public class EmployeeController {
 
     @PostMapping("/project/newProject")
     public ResponseEntity<?> createProject(@RequestBody Project project, HttpServletRequest request) throws ProjectAlreadyExists {
-        ResponseEntity responseEntity;
+        ResponseEntity<?> responseEntity;
         try {
-            /*System.out.println(request);
             Claims claims = (Claims) request.getAttribute("claims");
             String email = claims.getSubject();
-            System.out.println("clok : "+ claims);
-            System.out.println(email);*/
+            project.setEmail(email);
 
-            responseEntity = new ResponseEntity(kanbanService.createProject(project), HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(kanbanService.createProject(project), HttpStatus.OK);
 
         }catch (ProjectAlreadyExists e)
         {
@@ -54,10 +52,9 @@ public class EmployeeController {
     @PostMapping("/project/assign/{project_id}")
     public ResponseEntity<?> assignMember(@RequestBody User user, @PathVariable int project_id) throws
             EmployeeNotFound, ProjectNotFound{
-        ResponseEntity responseEntity;
-        System.out.println("Insside kan project controller : "+email);
+        ResponseEntity<?> responseEntity;
         try{
-            responseEntity = new ResponseEntity(kanbanService.assignMember(project_id,user),HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(kanbanService.assignMember(project_id,user),HttpStatus.OK);
 
         }catch (ProjectNotFound e){
             throw  new ProjectNotFound();
@@ -67,9 +64,9 @@ public class EmployeeController {
 
     @PostMapping("/project/addTask/{project_id}")
     public ResponseEntity<?> addTask(@RequestBody Task task, @PathVariable int project_id) throws ProjectNotFound{
-        ResponseEntity responseEntity;
+        ResponseEntity<?> responseEntity;
         try{
-            responseEntity = new ResponseEntity(kanbanService.addTask(task,project_id),HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(kanbanService.addTask(task,project_id),HttpStatus.OK);
 
         }catch (ProjectNotFound e){
             throw  new ProjectNotFound();
@@ -81,11 +78,7 @@ public class EmployeeController {
 
 
             Claims claims = (Claims) request.getAttribute("claims");
-            email = claims.getSubject();
-            System.out.println("user email from claims :: " + claims.getSubject());
-            System.out.println("email " + email);
-            System.out.println("email in user " + email);
-
+            String  email = claims.getSubject();
             responseEntity = new ResponseEntity<>(kanbanService.findByEmail(email), HttpStatus.OK);
 
         return responseEntity;
@@ -101,19 +94,12 @@ public class EmployeeController {
 
         Claims claims = (Claims) request.getAttribute("claims");
         String email = claims.getSubject();
-        System.out.println("user email from claims :: " + claims.getSubject());
-        System.out.println("email " + email);
-
-
             return new ResponseEntity<>(kanbanService.deleteTaskFromProject(project_id,email,task.getName()),HttpStatus.OK);
-
-
     }
 
     @PutMapping("project/updateTask/{project_id}")
     public ResponseEntity<?> updateTaskStatus(@PathVariable int project_id, @RequestBody Task task) throws ProjectNotFound{
-        ResponseEntity responseEntity1;
-
+        ResponseEntity<?> responseEntity1;
         try {
             responseEntity1 =  new ResponseEntity<>(kanbanService.updateTaskStatus(project_id,task),HttpStatus.OK);
         }catch (ProjectNotFound e){
