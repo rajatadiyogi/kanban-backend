@@ -13,6 +13,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DbSequence {
     @Id
     private String id;
-    private int emp;
     private int prj;
 }

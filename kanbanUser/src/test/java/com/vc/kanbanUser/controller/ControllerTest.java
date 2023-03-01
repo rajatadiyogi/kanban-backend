@@ -46,8 +46,8 @@ public class ControllerTest {
 
     @BeforeEach
     void setUp(){
-        employee1 = new Employee("test@gmail.com","testing","EMP156","member");
-        employee2 = new Employee("xyz@gmail.com","testxyz","EMP157","member");
+        employee1 = new Employee("test@gmail.com","testing","EMP156","member","free");
+        employee2 = new Employee("xyz@gmail.com","testxyz","EMP157","member","free");
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
     @AfterEach

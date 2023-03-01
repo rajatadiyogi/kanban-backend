@@ -18,8 +18,8 @@ public class Employee {
     private String email;
     @Transient
     private String password;
-    private  String role;
+    private  String username;
     private byte[] salt;
     private String hash;
-
+    private String title;
 }

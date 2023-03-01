@@ -11,19 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MessageConfig {
-//    private String exchangeName = "kanban-exchange";
-//    private String queue = "email-notification";
-//
-//    @Bean
-//    public DirectExchange directExchange(){return new DirectExchange(exchangeName);}
-//    @Bean
-//    public Queue queue(){return new Queue(queue);}
-
     @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter(){ return new Jackson2JsonMessageConverter();}
-
-//    @Bean
-//    Binding bindingEmail(DirectExchange exchange){
-//        return BindingBuilder.bind(queue()).to(exchange).with("email-routing");
-//    }
 }
