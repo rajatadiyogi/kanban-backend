@@ -27,4 +27,7 @@ public interface KanbanService {
     List<Project> findByEmail(String email);
 
     Project assignMember(int project_id, User user) throws EmployeeNotFound,ProjectNotFound;
+
+    boolean deleteProject(int project_id, String email) throws ProjectNotFound;
+    List<Project> getAssignedProjectList(String email);
 }

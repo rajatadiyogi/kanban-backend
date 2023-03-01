@@ -81,4 +81,9 @@ public class KanbanServiceImpl implements KanbanService{
         return employeeRepository.findByEmail(email);
     }
 
+    @Override
+    public List<Integer> getAssignedProjects(String email) {
+        Employee employee = employeeRepository.findByEmail(email);
+        return employee.getProject_id_list();
+    }
 }

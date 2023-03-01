@@ -12,8 +12,10 @@ import com.vc.kanbanProject.rebbitMQ.EmailProducer;
 import com.vc.kanbanProject.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -146,5 +148,35 @@ public class KanbanServiceImpl implements KanbanService{
         dto.setSubject(subject);
         dto.setMsgBody(bodyOfMail);
         emailProducer.ProjectAssignedEmail(dto);
+    }
+
+    @Override
+    public boolean deleteProject(int project_id, String email) throws ProjectNotFound {
+        Project project = projectRepository.findById(project_id);
+        if(project == null){
+            throw  new ProjectNotFound();
+        }
+        if(project.getEmail().equals(email)){
+            projectRepository.deleteById(project_id);
+            return  true;
+        }
+
+        return false ;
+    }
+
+    @Override
+    public List<Project> getAssignedProjectList(String email) {
+        ResponseEntity<List<Integer>> responseEntity = (ResponseEntity<List<Integer>>) employeeProxy.getAssignedProjects(email);
+        List<Integer>  projectIdsList =  responseEntity.getBody();
+
+        List<Project>  projectsList = new ArrayList<>();
+
+        if(projectIdsList != null){
+            for( int project_id : projectIdsList){
+                Project project = projectRepository.findById(project_id);
+                projectsList.add(project);
+            }
+        }
+        return projectsList;
     }
 }

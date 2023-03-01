@@ -54,10 +54,18 @@ public class EmployeeController {
 
 
     @GetMapping("/employee/getAll")
-    public ResponseEntity getAllDetails(){
+    public ResponseEntity<?> getAllDetails(){
         List<Employee> users = kanbanService.getAllEmployees();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    @GetMapping("employee/getProject/assigned/{email}")
+    public ResponseEntity<List<Integer>> getAssignedProjects(@PathVariable String email){
+       return new ResponseEntity<>(kanbanService.getAssignedProjects(email),HttpStatus.OK);
+       // return kanbanService.getAssignedProjects(email);
+
+    }
+
 
 
 }

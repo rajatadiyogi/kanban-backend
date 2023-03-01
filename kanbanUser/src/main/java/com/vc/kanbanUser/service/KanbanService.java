@@ -17,4 +17,6 @@ public interface KanbanService {
     Employee findByEmail(String email) throws EmployeeNotFound;
 
     Employee saveProjectIdInList(int project_id,String email) throws ProjectAlreadyExists;
+
+    List<Integer> getAssignedProjects(String email);
 }

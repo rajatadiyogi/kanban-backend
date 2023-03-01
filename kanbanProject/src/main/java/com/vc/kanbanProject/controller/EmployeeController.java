@@ -109,6 +109,26 @@ public class EmployeeController {
 
     }
 
+    @DeleteMapping("project/deleteProject/{project_id}")
+    public  ResponseEntity<?> deleteProject(@PathVariable int project_id, HttpServletRequest request) throws ProjectNotFound{
+        ResponseEntity<?> responseEntity1;
+        try {
+            Claims claims = (Claims) request.getAttribute("claims");
+            String email = claims.getSubject();
+            responseEntity1 =  new ResponseEntity<>(kanbanService.deleteProject(project_id, email),HttpStatus.OK);
+        }catch (ProjectNotFound e){
+            throw  new ProjectNotFound();
+        }
+        return responseEntity1;
+    }
+
+    @GetMapping("project/getAssigned")
+    public ResponseEntity<?> getAssignedProjects(HttpServletRequest request){
+        Claims claims = (Claims) request.getAttribute("claims");
+        String email = claims.getSubject();
+        return  new ResponseEntity<>(kanbanService.getAssignedProjectList(email),HttpStatus.OK);
+    }
+
 
 
 
